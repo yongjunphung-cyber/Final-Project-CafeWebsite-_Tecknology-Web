@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Menu</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            h1 {color: white;}
+            body {background-image: url(background2.jpg);}
+        </style>
+    </head>
+    <body>
+        <header>
+        <h1>Welcome to Local Cafe</h1>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="order.html">Order</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li class="indicator"></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="container">
+            <h2>Hot Drinks</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <img src="hotlatte.jpg" alt="Latte">
+                    <h3>Latte</h3>
+                    <p>Rich espresso with steamed milk.</p>
+                    <p><strong>RM8</strong></p>
+                    <input type="number" id="latteQty" min="1" value="1">
+                    <button onclick="addToCart('Latte',8,document.getElementById('latteQty').value)">Add</button>
+                </div>
+                <div class="menu-item">
+                    <img src="hotcappuccino.jpg" alt="Cappuccino">
+                    <h3>Cappuccino</h3>
+                    <p>Espresso topped with frothy milk.</p>
+                    <p><strong>RM9</strong></p>
+                    <input type="number" id="cappuccinoQty" min="1" value="1">
+                    <button onclick="addToCart('Cappuccino',9,document.getElementById('cappuccinoQty').value)">Add</button>
+                </div>
+            </div>
+
+            <h2>Cold Drinks</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <img src="icedamericano.png" alt="Iced Americano">
+                    <h3>Iced Americano</h3>
+                    <p>Refreshing espresso with cold water.</p>
+                    <p><strong>RM7</strong></p>
+                    <input type="number" id="americanoQty" min="1" value="1">
+                    <button onclick="addToCart('Iced Americano',7,document.getElementById('americanoQty').value)">Add</button>
+                </div>
+                    <div class="menu-item">
+                    <img src="icedtea.jpg" alt="Iced Tea">
+                    <h3>Iced Tea</h3>
+                    <p>Cool and sweetened black tea.</p>
+                    <p><strong>RM6</strong></p>
+                    <input type="number" id="icedteaQty" min="1" value="1">
+                    <button onclick="addToCart('Iced Tea',6,document.getElementById('icedteaQty').value)">Add</button>
+                </div>
+            </div>
+
+            <h2>Pastries</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <img src="croissant.jpg" alt="Croissant">
+                    <h3>Croissant</h3>
+                    <p>Buttery, flaky French pastry.</p>
+                    <p><strong>RM5</strong></p>
+                    <input type="number" id="croissantQty" min="1" value="1">
+                    <button onclick="addToCart('Croissant',5,document.getElementById('croissantQty').value)">Add</button>
+                </div>
+                <div class="menu-item">
+                    <img src="muffin.jpg" alt="Muffin">
+                    <h3>Muffin</h3>
+                    <p>Soft and sweet baked treat.</p>
+                    <p><strong>RM4</strong></p>
+                    <input type="number" id="muffinQty" min="1" value="1">
+                    <button onclick="addToCart('Muffin',4,document.getElementById('muffinQty').value)">Add</button>
+                </div>
+            </div>
+            <div class="glass-card cart-card">
+                <h2>Your Cart</h2>
+                <div id="cartSummary"></div>
+                <button class="signin-btn" onclick="goToOrder()">Proceed to Checkout</button>
+                <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+        <script>
+            let cart = [];
+
+            function addToCart(name, price, qty) {
+            qty = parseInt(qty) || 1;
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({ name, price, qty });
+            }
+            updateCart();
+            }
+
+            function changeQty(index, delta) {
+                cart[index].qty += delta;
+                if (cart[index].qty < 1) {
+                    cart.splice(index, 1);
+                }
+                updateCart();
+            }
+
+            function removeItem(index) {
+                cart.splice(index, 1);
+                updateCart();
+            }
+
+            function clearCart() {
+                cart = [];
+                updateCart();
+            }
+
+            function updateCart() {
+                const summary = document.getElementById("cartSummary");
+                if (cart.length === 0) {
+                    summary.innerHTML = '<p class="cart-empty">Your cart is empty. Add something tasty!</p>';
+                    return;
+                }
+
+                let html = "";
+                let total = 0;
+                cart.forEach((item, i) => {
+                    const itemTotal = item.price * item.qty;
+                    total += itemTotal;
+                    html += `
+                        <div class="cart-row">
+                            <span class="cart-name">${item.name}</span>
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="changeQty(${i}, -1)">&minus;</button>
+                                <span>${item.qty}</span>
+                                <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+                            </div>
+                            <span class="cart-price">RM${itemTotal}</span>
+                            <button class="remove-btn" onclick="removeItem(${i})" title="Remove">&#x2715;</button>
+                        </div>`;
+                });
+                html += `<div class="order-total">Total: RM${total}</div>`;
+                summary.innerHTML = html;
+            }
+
+            function goToOrder() {
+                if (cart.length === 0) {
+                    alert("Your cart is empty. Please add an item first.");
+                    return;
+                }
+                const items = encodeURIComponent(JSON.stringify(cart));
+                const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                window.location.href = `order.html?items=${items}&total=RM${total}`;
+            }
+
+            updateCart();
+        </script>
+    </body>
+</html>

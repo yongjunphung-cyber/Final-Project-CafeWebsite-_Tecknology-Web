@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign Up</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            h1 {color: white;}
+            body {background-image: url(signup2.jpg);}
+            body {background-position: center -300px;}
+        </style>
+    </head>
+    <body>
+        <header>
+        <h1>Welcome to Local Cafe</h1>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="order.html">Order</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li class="indicator"></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="glass-card">
+            <div class="avatar">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8z"/>
+                </svg>
+            </div>
+            <h2>Sign Up</h2>
+
+            <form action="signup_process.php" method="POST">
+                <div class="input-box">
+                    <span class="icon">&#x1F464;</span>
+                    <input type="text" name="name" placeholder="Name" required>
+                </div>
+
+                <div class="input-box">
+                    <span class="icon">&#x2709;</span>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="input-box">
+                    <span class="icon">&#x1F512;</span>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="signin-btn">Sign Up</button>
+            </form>
+
+            <div class="divider"><span>or</span></div>
+
+            <div class="social">
+                <a href="google_login.php" class="social-btn" title="Continue with Google">G</a>
+            </div>
+
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </body>
+</html>
